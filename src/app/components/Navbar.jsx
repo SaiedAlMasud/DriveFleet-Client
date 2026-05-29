@@ -8,9 +8,9 @@ const Navbar = () => {
   const pathname = usePathname();
 
   const navLinks = [
-    { name: 'Home', href: '/Home' },
-    { name: 'Explore Cars', href: '/explore-cars' },
-    { name: 'Add Cars', href: '/add-cars' },
+    { name: 'Home', href: '/' },
+    { name: 'Explore Cars', href: '/exploreCars' },
+    { name: 'Add Cars', href: '/addcar' },
     { name: 'My Bookings', href: '/my-bookings' },
   ];
 

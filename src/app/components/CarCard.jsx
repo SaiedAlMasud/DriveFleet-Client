@@ -9,12 +9,9 @@ const CarCard = ({ car }) => {
       
       {/* Availability Badge */}
       <div className="absolute top-3 right-3 z-10">
-        <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-          car.available 
-            ? 'bg-orange-500 text-white' 
-            : 'bg-red-500 text-white'
-        }`}>
-          {car.available ? 'Available' : 'Not Available'}
+        <span className='px-3 py-1 rounded-full text-sm font-semibold  
+            bg-orange-500 text-white' 
+            >{car.carType}
         </span>
       </div>
 
