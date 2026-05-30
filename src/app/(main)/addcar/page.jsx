@@ -15,7 +15,7 @@ const AddCarPage = () => {
                         List your vehicle on DriveFleet and start earning
                     </p>
                 </div>
-                <Form className="flex w-full max-w-6xl flex-col gap-6 mx-auto my-10 px-4">
+                <Form className="flex w-full max-w-4xl flex-col gap-6 mx-auto my-10 p-8 border border-gray-300 rounded-lg shadow-lg">
                     
                     {/* Car Name */}
                     <TextField isRequired name="carName" type="text">
@@ -66,7 +66,6 @@ const AddCarPage = () => {
                     <TextField isRequired name="imageURL" type="text">
                         <Label className="text-[20px]">Image URL</Label>
                         <Input placeholder="Enter the image URL" size="lg" className="placeholder:text-[20px] h-15 hover:border hover:border-gray-300" />
-                        <Description className="text-[16px]">Provide a link to the image of your car</Description>
                         <FieldError />
                     </TextField>
 
@@ -75,7 +74,6 @@ const AddCarPage = () => {
                         <TextField isRequired name="seatCapacity" type="text">
                             <Label className="text-[20px]">Seat Capacity</Label>
                             <Input placeholder="Enter the seat capacity" size="lg" className="placeholder:text-[20px] h-15 hover:border hover:border-gray-300" />
-                            <Description className="text-[16px]">Specify the number of seats in the car</Description>
                             <FieldError />
                         </TextField>
 
@@ -83,7 +81,6 @@ const AddCarPage = () => {
                         <TextField isRequired name="pickupLocation" type="text">
                             <Label className="text-[20px]">Pickup Location</Label>
                             <Input placeholder="Enter the pickup location" size="lg" className="placeholder:text-[20px] h-15 hover:border hover:border-gray-300" />
-                            <Description className="text-[16px]">Specify where the car will be available for pickup</Description>
                             <FieldError />
                         </TextField>
                     </div>
@@ -96,7 +93,6 @@ const AddCarPage = () => {
                             placeholder="Describe your car's features, condition and what makes it special" 
                             size="lg" 
                         />
-                        <Description className="text-[16px]">Provide a brief description of the car</Description>
                         <FieldError />
                     </TextField>
 
