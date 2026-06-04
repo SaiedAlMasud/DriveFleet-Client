@@ -2,7 +2,7 @@ import ExploreCarClient from './ExploreCarClient';
 
 async function getCars() {
     try {
-        const res = await fetch('http://localhost:3000/cars', {
+        const res = await fetch('http://localhost:5000/cars', {
             cache: 'no-store',
         });
         const data = await res.json();

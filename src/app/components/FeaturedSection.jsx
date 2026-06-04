@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 
 const FeaturedSection = async () => {
-    const cars = await fetch('http://localhost:3000/cars').then(res => res.json());
+    const cars = await fetch('http://localhost:5000/cars').then(res => res.json());
     return (
         <div>
             <div className='text-center my-15'>
