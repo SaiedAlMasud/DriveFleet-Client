@@ -14,6 +14,8 @@ import {
     Card
 } from "@heroui/react";
 import { FaGoogle, FaEnvelope, FaLock } from 'react-icons/fa';
+import Image from 'next/image';
+import { FcGoogle } from 'react-icons/fc';
 
 export default function LoginPage() {
     const router = useRouter();
@@ -141,15 +143,17 @@ export default function LoginPage() {
                         <span className="px-3 bg-white text-md text-gray-500 my-5">Or continue with</span>
                     </div>
                 </div>
-                <Button
-                    variant="bordered"
-                    size="lg"
-                    onClick={handleGoogleLogin}
-                    className="w-full border-gray-300 hover:bg-gray-50"
-                    startContent={<FaGoogle className="text-red-500" />}
-                >
-                    Sign in with Google
-                </Button>
+                    
+                    <Button
+                        variant="bordered"
+                        size="lg"
+                        onClick={handleGoogleLogin}
+                        className="w-full border-gray-300  hover:bg-gray-50"
+                        startContent={<FaGoogle className="text-red-500" />}
+                    >
+                        <FcGoogle />
+                        Sign in with Google
+                    </Button>
                 <div className="text-center mt-6">
                     <p className="text-sm text-gray-600">
                         Don't have an account?{' '}

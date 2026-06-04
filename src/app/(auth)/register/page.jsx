@@ -14,6 +14,7 @@ import {
     Card
 } from "@heroui/react";
 import { FaGoogle, FaEnvelope, FaLock, FaUser, FaCamera } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
 
 export default function RegisterPage() {
     const router = useRouter();
@@ -22,37 +23,13 @@ export default function RegisterPage() {
 
     const onSubmit = async (e) => {
         e.preventDefault();
+        console.log(e.currentTarget);
         setIsLoading(true);
         setError('');
 
         const formData = new FormData(e.currentTarget);
-        const name = formData.get('name');
-        const email = formData.get('email');
-        const photoURL = formData.get('photoURL');
-        const password = formData.get('password');
-
-        try {
-            const response = await fetch('http://localhost:5000/auth/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name, email, photoURL, password }),
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                alert('Registration successful! Please login.');
-                router.push('/login');
-            } else {
-                setError(data.message || 'Registration failed');
-            }
-        } catch (error) {
-            setError('Something went wrong. Please try again.');
-        } finally {
-            setIsLoading(false);
-        }
+        console.log(formData);
+        
     };
 
     const handleGoogleLogin = async () => {
@@ -88,7 +65,7 @@ export default function RegisterPage() {
 
     return (
         <div className="max-w-2xl my-12 mx-auto min-h-screen flex items-center justify-center">
-            <Card className="border border-gray-200 mx-auto shadow-xl space-y-5 p-8 md:p-10">
+            <Card className="border border-gray-200 mx-auto shadow-2xl space-y-5 p-8 md:p-10">
                 {/* Header */}
                 <div className="flex flex-col gap-2 pt-2 pb-6">
                     <h2 className="text-5xl font-bold text-gray-900 text-center">
@@ -124,10 +101,10 @@ export default function RegisterPage() {
                             }}
                         >
                             <Label className="text-gray-700 text-xl">Name</Label>
-                            <Input 
-                                placeholder="Enter your full name" 
+                            <Input
+                                placeholder="Enter your full name"
                                 startContent={<FaUser className="text-gray-400" />}
-                                className="text-gray-700 text-xl" 
+                                className="text-gray-700 text-xl"
                             />
                             <FieldError />
                         </TextField>
@@ -145,10 +122,10 @@ export default function RegisterPage() {
                             }}
                         >
                             <Label className="text-gray-700 text-xl">Email</Label>
-                            <Input 
-                                placeholder="Enter your email" 
+                            <Input
+                                placeholder="Enter your email"
                                 startContent={<FaEnvelope className="text-gray-400" />}
-                                className="text-gray-700 text-xl" 
+                                className="text-gray-700 text-xl"
                             />
                             <FieldError />
                         </TextField>
@@ -159,10 +136,10 @@ export default function RegisterPage() {
                             type="url"
                         >
                             <Label className="text-gray-700 text-xl">Photo URL</Label>
-                            <Input 
-                                placeholder="https://example.com/your-photo.jpg" 
+                            <Input
+                                placeholder="https://example.com/your-photo.jpg"
                                 startContent={<FaCamera className="text-gray-400" />}
-                                className="text-gray-700 text-xl" 
+                                className="text-gray-700 text-xl"
                             />
                             <FieldError />
                         </TextField>
@@ -190,15 +167,16 @@ export default function RegisterPage() {
                             }}
                         >
                             <Label className="text-gray-700 text-xl">Password</Label>
-                            <Input 
-                                placeholder="Create a password" 
+                            <Input
+                                placeholder="Create a password"
                                 startContent={<FaLock className="text-gray-400" />}
-                                className="text-gray-700 text-xl" 
+                                className="text-gray-700 text-xl"
                             />
                             <Description>Must be at least 8 characters with 1 uppercase, 1 lowercase, and 1 number</Description>
                             <FieldError />
                         </TextField>
 
+                        {/* Register Button */}
                         {/* Register Button */}
                         <div className="text-2xl">
                             <Button
@@ -206,9 +184,9 @@ export default function RegisterPage() {
                                 color="primary"
                                 size="lg"
                                 isLoading={isLoading}
-                                className="w-full bg-blue-600 hover:bg-blue-700 text-base text-2xl font-semibold mt-2"
+                                className="w-full bg-blue-600 hover:bg-blue-700 text-white text-xl font-semibold mt-2"
                             >
-                                {!isLoading && "Register"}
+                                {!isLoading ? "Sign Up" : "Creating Account..."}
                             </Button>
                         </div>
                     </Form>
@@ -230,9 +208,10 @@ export default function RegisterPage() {
                     size="lg"
                     onClick={handleGoogleLogin}
                     isLoading={isLoading}
-                    className="w-full border-gray-300 hover:bg-gray-50"
+                    className="w-full border border-gray-300 hover:bg-gray-300"
                     startContent={<FaGoogle className="text-red-500" />}
                 >
+                    <FcGoogle />
                     Sign up with Google
                 </Button>
 

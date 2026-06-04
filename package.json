@@ -8,8 +8,10 @@
     "start": "next start"
   },
   "dependencies": {
+    "@better-auth/mongo-adapter": "^1.6.14",
     "@heroui/react": "^3.1.0",
     "@heroui/styles": "^3.1.0",
+    "better-auth": "^1.6.14",
     "next": "16.2.6",
     "react": "19.2.4",
     "react-dom": "19.2.4",
