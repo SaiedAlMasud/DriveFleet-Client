@@ -15,21 +15,47 @@ import {
 } from "@heroui/react";
 import { FaGoogle, FaEnvelope, FaLock, FaUser, FaCamera } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
+import { signUp } from '@/app/lib/auth-client';
+import toast from 'react-hot-toast';
 
 export default function RegisterPage() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
 
-    const onSubmit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(e.currentTarget);
         setIsLoading(true);
         setError('');
 
         const formData = new FormData(e.currentTarget);
-        console.log(formData);
-        
+        const registerData = Object.fromEntries(formData.entries());
+
+        try {
+            const { error } = await signUp.email({
+                name: registerData.name,
+                email: registerData.email,
+                password: registerData.password,
+                image: registerData.photoURL || undefined,
+                callbackURL: "/",
+            });
+
+            if (error) {
+                const message = error.message || "Registration failed";
+                setError(message);
+                toast.error(message);
+                return;
+            }
+
+            toast.success("Account created successfully");
+            router.push("/");
+        } catch (error) {
+            const message = error?.message || "Something went wrong. Please try again.";
+            setError(message);
+            toast.error(message);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const handleGoogleLogin = async () => {
@@ -87,7 +113,7 @@ export default function RegisterPage() {
                         </div>
                     )}
 
-                    <Form className="flex w-96 mx-auto flex-col gap-6" onSubmit={onSubmit}>
+                    <Form className="flex w-96 mx-auto flex-col gap-6" onSubmit={handleSubmit}>
                         {/* Name Field */}
                         <TextField
                             isRequired
@@ -151,8 +177,8 @@ export default function RegisterPage() {
                             name="password"
                             type="password"
                             validate={(value) => {
-                                if (value.length < 8) {
-                                    return "Password must be at least 8 characters";
+                                if (value.length < 6) {
+                                    return "Password must be at least 6 characters";
                                 }
                                 if (!/[A-Z]/.test(value)) {
                                     return "Password must contain at least one uppercase letter";
