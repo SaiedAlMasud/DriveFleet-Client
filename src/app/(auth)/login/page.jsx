@@ -16,40 +16,48 @@ import {
 import { FaGoogle, FaEnvelope, FaLock } from 'react-icons/fa';
 import Image from 'next/image';
 import { FcGoogle } from 'react-icons/fc';
+import { signIn } from '@/app/lib/auth-client';
+import toast from 'react-hot-toast';
 
 export default function LoginPage() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
 
-    const onSubmit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
         setError('');
 
         const formData = new FormData(e.currentTarget);
-        const email = formData.get('email');
-        const password = formData.get('password');
+        const registerData = Object.fromEntries(formData.entries());
 
         try {
-            const response = await fetch('http://localhost:5000/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
+            const { error } = await signIn.email({
+                email: registerData.email,
+                password: registerData.password,
+                callbackURL: "/",
             });
 
-            const data = await response.json();
-
-            if (response.ok) {
-                alert('Login successful!');
-                router.push('/');
-            } else {
-                setError(data.message || 'Login failed');
+            if (error) {
+                const message = error.message || "Login failed";
+                setError(message);
+                toast.error(message, {
+                    duration: 3000
+                });
+                return;
             }
+
+            toast.success("Login successfully", {
+                duration: 3000
+            });
+            router.push("/");
         } catch (error) {
-            setError('Something went wrong. Please try again.');
+            const message = error?.message || "Something went wrong. Please try again.";
+            setError(message);
+            toast.error(message, {
+                duration: 3000
+            });
         } finally {
             setIsLoading(false);
         }
@@ -83,7 +91,7 @@ export default function LoginPage() {
                         </div>
                     )}
 
-                    <Form className="flex w-96 mx-auto flex-col gap-6" onSubmit={onSubmit}>
+                    <Form className="flex w-96 mx-auto flex-col gap-6" onSubmit={handleSubmit}>
                         <TextField
                             isRequired
                             name="email"
@@ -105,8 +113,8 @@ export default function LoginPage() {
                             name="password"
                             type="password"
                             validate={(value) => {
-                                if (value.length < 8) {
-                                    return "Password must be at least 8 characters";
+                                if (value.length < 6) {
+                                    return "Password must be at least 6 characters";
                                 }
                                 if (!/[A-Z]/.test(value)) {
                                     return "Password must contain at least one uppercase letter";
@@ -130,7 +138,7 @@ export default function LoginPage() {
                                 isLoading={isLoading}
                                 className="w-full bg-blue-600 hover:bg-blue-700 text-base text-2xl font-semibold mt-2"
                             >
-                                {!isLoading && "Sign In"}
+                                {!isLoading ? "Sign In" : "Signing In..."}
                             </Button>
                         </div>
                     </Form>
@@ -143,17 +151,17 @@ export default function LoginPage() {
                         <span className="px-3 bg-white text-md text-gray-500 my-5">Or continue with</span>
                     </div>
                 </div>
-                    
-                    <Button
-                        variant="bordered"
-                        size="lg"
-                        onClick={handleGoogleLogin}
-                        className="w-full border-gray-300  hover:bg-gray-50"
-                        startContent={<FaGoogle className="text-red-500" />}
-                    >
-                        <FcGoogle />
-                        Sign in with Google
-                    </Button>
+
+                <Button
+                    variant="bordered"
+                    size="lg"
+                    onClick={handleGoogleLogin}
+                    className="w-full border-gray-300  hover:bg-gray-50"
+                    startContent={<FaGoogle className="text-red-500" />}
+                >
+                    <FcGoogle />
+                    Sign in with Google
+                </Button>
                 <div className="text-center mt-6">
                     <p className="text-sm text-gray-600">
                         Don't have an account?{' '}
