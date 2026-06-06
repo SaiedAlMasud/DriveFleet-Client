@@ -1,3 +1,4 @@
+import BookNowButton from '@/app/components/BookNowButton';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Suspense } from 'react';
@@ -58,7 +59,7 @@ async function CarContent({ id }) {
             </Link>
 
             {/* Main Card */}
-            <div className="bg-white rounded-3xl shadow-lg overflow-hidden border border-gray-100">
+            <div className="bg-white rounded-3xl shadow-lg border border-gray-100">
                 <div className="grid lg:grid-cols-2">
                     
                     {/* Left Side - Image */}
@@ -123,11 +124,7 @@ async function CarContent({ id }) {
                             </div>
                         </div>
 
-                        {/* Book Now Button */}
-                        <button className="mt-12  bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-full text-xl lg:text-2xl font-semibold flex items-center justify-center gap-3 transition-all duration-300 shadow-lg hover:shadow-xl">
-                            <FaCalendarAlt />
-                            Book Now
-                        </button>
+                        <BookNowButton car={car} />
                     </div>
                 </div>
             </div>
