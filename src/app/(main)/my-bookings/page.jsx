@@ -4,12 +4,13 @@ import { useState, useEffect } from 'react';
 import { authClient } from '@/app/lib/auth-client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaCalendarAlt, FaMapMarkerAlt, FaCar, FaUser } from 'react-icons/fa';
+import { FaCalendarAlt, FaMapMarkerAlt, FaCar, FaUser, FaTrash } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
 export default function MyBookingsPage() {
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [deletingId, setDeletingId] = useState(null);
 
     useEffect(() => {
         fetchBookings();
@@ -34,6 +35,33 @@ export default function MyBookingsPage() {
         }
     };
 
+    const handleDeleteBooking = async (bookingId) => {
+        const confirmed = window.confirm('Are you sure you want to cancel this booking?');
+        if (!confirmed) return;
+
+        setDeletingId(bookingId);
+
+        try {
+            const response = await fetch(`http://localhost:5000/api/bookings/${bookingId}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                toast.success('Booking cancelled successfully');
+                // Remove the deleted booking from the list
+                setBookings(bookings.filter(booking => booking._id !== bookingId));
+            } else {
+                const error = await response.json();
+                toast.error(error.message || 'Failed to cancel booking');
+            }
+        } catch (error) {
+            console.error('Error deleting booking:', error);
+            toast.error('Something went wrong');
+        } finally {
+            setDeletingId(null);
+        }
+    };
+
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
@@ -45,12 +73,12 @@ export default function MyBookingsPage() {
     return (
         <div className="min-h-screen bg-gray-50 py-12 px-4">
             <div className="max-w-full mx-auto px-4">
-                <h1 className="text-4xl font-bold text-gray-900 mb-8">My Bookings</h1>
-                
+                <h1 className="text-4xl font-bold text-black mb-8">My Bookings</h1>
+
                 {bookings.length === 0 ? (
-                    <div className="text-center py-12">
-                        <p className="text-gray-500 text-lg">No bookings found</p>
-                        <Link href="/exploreCars" className="text-blue-600 hover:underline mt-2 inline-block">
+                    <div className="text-center py-12 bg-white space-y-2 rounded-xl shadow-lg">
+                        <p className="text-black font-bold text-5xl mb-12">No bookings found</p>
+                        <Link href="/exploreCars" className="text-blue-600 mt-2 py-2 px-4 bg-blue-500 text-white rounded-full text-lg font-semibold hover:bg-blue-600 transition">
                             Browse Cars
                         </Link>
                     </div>
@@ -67,13 +95,26 @@ export default function MyBookingsPage() {
                                             className="w-full h-full object-cover"
                                         />
                                     </div>
-                                    
+
                                     {/* Booking Details */}
                                     <div className="flex-1 p-6">
-                                        <h3 className="text-4xl font-bold text-gray-900 mb-2">
-                                            {booking.carName}
-                                        </h3>
-                                        
+                                        <div className="flex justify-between items-start">
+                                            <h3 className="text-4xl font-bold text-gray-900 mb-2">
+                                                {booking.carName}
+                                            </h3>
+                                            <button
+                                                onClick={() => handleDeleteBooking(booking._id)}
+                                                disabled={deletingId === booking._id}
+                                                className="delete-btn transition p-2 rounded-full hover:bg-red-50 disabled:opacity-50"
+                                            >
+                                                {deletingId === booking._id ? (
+                                                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-red-500"></div>
+                                                ) : (
+                                                    <FaTrash size={20} className="text-red-500" />
+                                                )}
+                                            </button>
+                                        </div>
+
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4 space-y-1">
                                             <div className="flex items-center gap-2 text-gray-600">
                                                 <FaMapMarkerAlt className="text-blue-500" />
@@ -92,13 +133,13 @@ export default function MyBookingsPage() {
                                                 <span className='text-xl'>{booking.userName}</span>
                                             </div>
                                         </div>
-                                        
+
                                         {booking.specialNote && (
                                             <p className="text-gray-600 text-md mb-3">
                                                 Note: {booking.specialNote}
                                             </p>
                                         )}
-                                        
+
                                         <div className="flex justify-between items-center">
                                             <div>
                                                 <span className="text-lg text-gray-600">Total Price</span>
@@ -106,11 +147,10 @@ export default function MyBookingsPage() {
                                                     ${booking.totalPrice}
                                                 </p>
                                             </div>
-                                            <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                                                booking.status === 'confirmed' 
-                                                    ? 'bg-green-100 text-green-600' 
-                                                    : 'bg-yellow-100 text-yellow-600'
-                                            }`}>
+                                            <span className={`badge px-3 py-1 rounded-full text-lg font-semibold ${booking.status === 'confirmed'
+                                                    ? 'bg-green-500 text-white'
+                                                    : 'bg-red-500 text-white'
+                                                }`}>
                                                 {booking.status}
                                             </span>
                                         </div>
