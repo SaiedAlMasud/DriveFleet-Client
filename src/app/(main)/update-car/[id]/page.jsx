@@ -59,7 +59,7 @@ export default function UpdateCarPage({ params }) {
             seatCapacity: Number(formData.get('seatCapacity')),
             pickupLocation: formData.get('pickupLocation'),
             description: formData.get('description'),
-            availability: formData.get('availability') === 'true',
+            availabile: formData.get('availability') === 'true',
         };
 
         try {
@@ -200,8 +200,8 @@ export default function UpdateCarPage({ params }) {
                         </Select.Trigger>
                         <Select.Popover>
                             <ListBox>
-                                <ListBox.Item id="true" textValue="Available" className="text-lg md:text-xl">Available</ListBox.Item>
-                                <ListBox.Item id="false" textValue="Not Available" className="text-lg md:text-xl">Not Available</ListBox.Item>
+                                <ListBox.Item id="true" textValue="Available" className="text-lg md:text-2xl">Available</ListBox.Item>
+                                <ListBox.Item id="false" textValue="Not Available" className="text-lg md:text-2xl">Not Available</ListBox.Item>
                             </ListBox>
                         </Select.Popover>
                     </Select>

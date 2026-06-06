@@ -17,19 +17,30 @@ export default function MyBookingsPage() {
     }, []);
 
     const fetchBookings = async () => {
+        setLoading(true);
+
+        // Add minimum 1 second delay to show loading spinner
+        const minimumLoadingTime = new Promise(resolve => setTimeout(resolve, 1000));
+
         try {
             const { data: session } = await authClient.getSession();
             if (!session?.user) {
                 toast.error('Please login to view bookings');
+                setBookings([]);
+                await minimumLoadingTime;
+                setLoading(false);
                 return;
             }
 
             const response = await fetch(`http://localhost:5000/api/bookings/user/${session.user.id}`);
             const data = await response.json();
             setBookings(data);
+            await minimumLoadingTime;
         } catch (error) {
             console.error('Error fetching bookings:', error);
             toast.error('Failed to load bookings');
+            setBookings([]);
+            await minimumLoadingTime;
         } finally {
             setLoading(false);
         }
@@ -48,8 +59,7 @@ export default function MyBookingsPage() {
 
             if (response.ok) {
                 toast.success('Booking cancelled successfully');
-                // Remove the deleted booking from the list
-                setBookings(bookings.filter(booking => booking._id !== bookingId));
+                setBookings(prevBookings => prevBookings.filter(booking => booking._id !== bookingId));
             } else {
                 const error = await response.json();
                 toast.error(error.message || 'Failed to cancel booking');
@@ -62,10 +72,12 @@ export default function MyBookingsPage() {
         }
     };
 
+    // Show loading spinner
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+                <p className="mt-4 text-black text-2xl">Loading my bookings...</p>
             </div>
         );
     }
@@ -76,9 +88,12 @@ export default function MyBookingsPage() {
                 <h1 className="text-4xl font-bold text-black mb-8">My Bookings</h1>
 
                 {bookings.length === 0 ? (
-                    <div className="text-center py-12 bg-white space-y-2 rounded-xl shadow-lg">
-                        <p className="text-black font-bold text-5xl mb-12">No bookings found</p>
-                        <Link href="/exploreCars" className="text-blue-600 mt-2 py-2 px-4 bg-blue-500 text-white rounded-full text-lg font-semibold hover:bg-blue-600 transition">
+                    <div className="text-center py-12 bg-white space-y-4 rounded-xl shadow-lg">
+                        <p className="text-black font-bold text-3xl md:text-5xl mb-6">No bookings found</p>
+                        <Link
+                            href="/exploreCars"
+                            className="inline-block text-white bg-blue-600 px-6 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition"
+                        >
                             Browse Cars
                         </Link>
                     </div>
@@ -99,7 +114,7 @@ export default function MyBookingsPage() {
                                     {/* Booking Details */}
                                     <div className="flex-1 p-6">
                                         <div className="flex justify-between items-start">
-                                            <h3 className="text-4xl font-bold text-gray-900 mb-2">
+                                            <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
                                                 {booking.carName}
                                             </h3>
                                             <button
@@ -115,41 +130,41 @@ export default function MyBookingsPage() {
                                             </button>
                                         </div>
 
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4 space-y-1">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
                                             <div className="flex items-center gap-2 text-gray-600">
                                                 <FaMapMarkerAlt className="text-blue-500" />
-                                                <span className='text-xl'>{booking.pickupLocation}</span>
+                                                <span className='text-lg md:text-xl'>{booking.pickupLocation}</span>
                                             </div>
                                             <div className="flex items-center gap-2 text-gray-600">
                                                 <FaCalendarAlt className="text-blue-500" />
-                                                <span className='text-xl'>{new Date(booking.bookingDate).toLocaleDateString()}</span>
+                                                <span className='text-lg md:text-xl'>{new Date(booking.bookingDate).toLocaleDateString()}</span>
                                             </div>
                                             <div className="flex items-center gap-2 text-gray-600">
                                                 <FaCar className="text-blue-500" />
-                                                <span className='text-xl'>Driver: {booking.driverNeeded ? 'Yes' : 'No'}</span>
+                                                <span className='text-lg md:text-xl'>Driver: {booking.driverNeeded ? 'Yes' : 'No'}</span>
                                             </div>
                                             <div className="flex items-center gap-2 text-gray-600">
                                                 <FaUser className="text-blue-500" />
-                                                <span className='text-xl'>{booking.userName}</span>
+                                                <span className='text-lg md:text-xl'>{booking.userName}</span>
                                             </div>
                                         </div>
 
                                         {booking.specialNote && (
-                                            <p className="text-gray-600 text-md mb-3">
+                                            <p className="text-gray-600 text-base md:text-lg mb-3">
                                                 Note: {booking.specialNote}
                                             </p>
                                         )}
 
                                         <div className="flex justify-between items-center">
                                             <div>
-                                                <span className="text-lg text-gray-600">Total Price</span>
-                                                <p className="text-2xl font-bold text-blue-600">
+                                                <span className="text-base md:text-lg text-gray-600">Total Price</span>
+                                                <p className="text-2xl md:text-3xl font-bold text-blue-600">
                                                     ${booking.totalPrice}
                                                 </p>
                                             </div>
-                                            <span className={`badge px-3 py-1 rounded-full text-lg font-semibold ${booking.status === 'confirmed'
-                                                    ? 'bg-green-500 text-white'
-                                                    : 'bg-red-500 text-white'
+                                            <span className={`px-4 py-2 rounded-full text-base md:text-lg font-semibold ${booking.status === 'confirmed'
+                                                ? 'bg-green-500 text-white'
+                                                : 'bg-yellow-500 text-white'
                                                 }`}>
                                                 {booking.status}
                                             </span>

@@ -40,7 +40,7 @@ export default function MyAddedCarsPage() {
         if (!confirmed) return;
 
         setDeletingId(carId);
-        
+
         try {
             const response = await fetch(`http://localhost:5000/cars/${carId}`, {
                 method: 'DELETE',
@@ -65,6 +65,7 @@ export default function MyAddedCarsPage() {
         return (
             <div className="min-h-screen flex items-center justify-center">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                <p className="mt-4 text-gray-600 text-2xl">Loading my added cars...</p>
             </div>
         );
     }
@@ -74,14 +75,14 @@ export default function MyAddedCarsPage() {
             <div className="max-w-7xl mx-auto">
                 <div className="flex justify-between items-center mb-8">
                     <h1 className="text-4xl font-bold text-gray-900">My Added Cars</h1>
-                    <Link 
-                        href="/addcar" 
+                    <Link
+                        href="/addcar"
                         className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition"
                     >
                         + Add New Car
                     </Link>
                 </div>
-                
+
                 {cars.length === 0 ? (
                     <div className="text-center py-12 bg-white rounded-xl shadow-md">
                         <p className="text-gray-500 text-lg mb-4">You haven't added any cars yet</p>
@@ -100,49 +101,48 @@ export default function MyAddedCarsPage() {
                                         alt={car.carName}
                                         className="w-full h-full object-cover"
                                     />
-                                    <span className={`absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-semibold ${
-                                        car.availability || car.available
+                                    <span className={`absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-semibold ${car.available === true
                                             ? 'bg-green-500 text-white'
                                             : 'bg-red-500 text-white'
-                                    }`}>
-                                        {car.availability || car.available ? 'Available' : 'Not Available'}
+                                        }`}>
+                                        {car.available === true ? 'Available' : 'Not Available'}
                                     </span>
                                 </div>
-                                
+
                                 {/* Car Details */}
                                 <div className="p-5">
                                     <div className="flex justify-between items-start mb-3">
                                         <h3 className="text-xl font-bold text-gray-900">
                                             {car.carName}
                                         </h3>
-                                        <div className="flex gap-2">
+                                        <div className="flex justify-center items-center gap-4">
                                             <Link
                                                 href={`/update-car/${car._id}`}
                                                 className="text-blue-500 hover:text-blue-700 transition p-1"
                                             >
-                                                <FaEdit size={18} />
+                                                <FaEdit size={24} />
                                             </Link>
                                             <button
                                                 onClick={() => handleDeleteCar(car._id)}
                                                 disabled={deletingId === car._id}
-                                                className="text-red-500 hover:text-red-700 transition p-1 disabled:opacity-50"
+                                                className="text-red-400 hover:text-red-700 transition p-1 disabled:opacity-50"
                                             >
                                                 {deletingId === car._id ? (
                                                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-500"></div>
                                                 ) : (
-                                                    <FaTrash size={18} />
+                                                    <FaTrash size={24} />
                                                 )}
                                             </button>
                                         </div>
                                     </div>
-                                    
+
                                     {/* Car Type Badge */}
                                     <div className="mb-3">
                                         <span className="inline-block px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-xs font-semibold">
                                             {car.carType}
                                         </span>
                                     </div>
-                                    
+
                                     {/* Car Specs */}
                                     <div className="space-y-2 mb-4">
                                         <div className="flex items-center gap-2 text-gray-600">
@@ -161,14 +161,14 @@ export default function MyAddedCarsPage() {
                                             <span>{car.pickupLocation}</span>
                                         </div>
                                     </div>
-                                    
+
                                     {/* Description Preview */}
                                     {car.description && (
                                         <p className="text-gray-500 text-sm mb-4 line-clamp-2">
                                             {car.description}
                                         </p>
                                     )}
-                                    
+
                                     {/* View Details Button */}
                                     <Link
                                         href={`/details/${car._id}`}

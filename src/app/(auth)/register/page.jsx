@@ -198,11 +198,10 @@ export default function RegisterPage() {
                                 startContent={<FaLock className="text-gray-400" />}
                                 className="text-gray-700 text-xl"
                             />
-                            <Description>Must be at least 8 characters with 1 uppercase, 1 lowercase, and 1 number</Description>
+                            <Description>Must be at least 6 characters with 1 uppercase, 1 lowercase, and 1 number</Description>
                             <FieldError />
                         </TextField>
 
-                        {/* Register Button */}
                         {/* Register Button */}
                         <div className="text-2xl">
                             <Button

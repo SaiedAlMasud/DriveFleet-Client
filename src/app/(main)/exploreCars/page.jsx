@@ -1,8 +1,18 @@
 import ExploreCarClient from './ExploreCarClient';
 
-async function getCars() {
+async function getCars(search = '', type = 'All Types') {
     try {
-        const res = await fetch('http://localhost:5000/cars', {
+        // Build URL with query parameters
+        const params = new URLSearchParams();
+        if (search && search.trim() !== '') {
+            params.append('search', search);
+        }
+        if (type && type !== 'All Types') {
+            params.append('type', type);
+        }
+        
+        const url = `http://localhost:5000/cars${params.toString() ? `?${params.toString()}` : ''}`;
+        const res = await fetch(url, {
             cache: 'no-store',
         });
         const data = await res.json();
@@ -13,8 +23,12 @@ async function getCars() {
     }
 }
 
-export default async function ExploreCarPage() {
-    const cars = await getCars();
+export default async function ExploreCarPage({ searchParams }) {
+    // Get search and type from URL query parameters
+    const search = (await searchParams)?.search || '';
+    const type = (await searchParams)?.type || 'All Types';
     
-    return <ExploreCarClient initialCars={cars} />;
+    const cars = await getCars(search, type);
+    
+    return <ExploreCarClient initialCars={cars} initialSearch={search} initialType={type} />;
 }
