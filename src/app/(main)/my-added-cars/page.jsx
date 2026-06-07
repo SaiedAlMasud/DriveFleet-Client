@@ -20,17 +20,23 @@ export default function MyAddedCarsPage() {
                 setLoading(false);
                 return;
             }
-
-            // Get token from session or cookies
-            const { token } = await authClient.api.getToken();
+            
+            // Fix: Use getToken() instead of token()
+            const tokenData  = await authClient.token();
+            console.log('Auth token:', tokenData?.data?.token); // Debugging log
             
             const response = await fetch(`http://localhost:5000/cars/my-cars/${session.user.id}`, {
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${tokenData?.data?.token}`,
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
             });
+            
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             
             const data = await response.json();
             setCars(data);
@@ -53,14 +59,12 @@ export default function MyAddedCarsPage() {
         setDeletingId(carId);
 
         try {
-            // Get token for delete request
-            const { token } = await authClient.api.getToken();
-            
+            const tokenData = await authClient.token();
             const response = await fetch(`http://localhost:5000/cars/${carId}`, {
                 method: 'DELETE',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${tokenData?.data?.token}`,
                 },
                 credentials: 'include',
             });
@@ -104,8 +108,8 @@ export default function MyAddedCarsPage() {
 
                 {cars.length === 0 ? (
                     <div className="text-center py-12 bg-white rounded-xl shadow-md">
-                        <p className="text-gray-500 text-lg mb-4">You haven't added any cars yet</p>
-                        <Link href="/addcar" className="text-blue-600 hover:underline inline-block">
+                        <p className="text-black text-5xl font-bold mb-12">You haven't added any cars yet</p>
+                        <Link href="/addcar" className="text-white bg-blue-600 text-lg hover:bg-blue-700 px-6 py-4 rounded-full font-semibold transition">
                             Add Your First Car
                         </Link>
                     </div>
