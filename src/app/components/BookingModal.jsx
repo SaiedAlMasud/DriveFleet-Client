@@ -59,12 +59,14 @@ const BookingModal = ({
                 userEmail: session.user.email,
                 status: 'confirmed'
             };
-
+            const tokenData = await authClient.token();
+            const token = tokenData?.data?.token;
             // Send booking data to your API
             const response = await fetch('http://localhost:5000/api/bookings', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify(bookingData),
             });

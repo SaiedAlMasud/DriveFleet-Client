@@ -32,13 +32,23 @@ export default function MyBookingsPage() {
                 return;
             }
             const tokenData = await authClient.token();
-            const response = await fetch(`http://localhost:5000/api/bookings/user/${session.user.id}`, {
-                headers: {
-                    'Authorization': `Bearer ${tokenData.token}`
+            const token = tokenData?.data?.token;
+
+            const response = await fetch(
+                `http://localhost:5000/api/bookings/user/${session.user.id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                 }
-            });
+            );
             const data = await response.json();
-            setBookings(data);
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to fetch bookings');
+            }
+
+            setBookings(Array.isArray(data) ? data : []);
             await minimumLoadingTime;
         } catch (error) {
             console.error('Error fetching bookings:', error);
@@ -57,12 +67,17 @@ export default function MyBookingsPage() {
         setDeletingId(bookingId);
 
         try {
-            const response = await fetch(`http://localhost:5000/api/bookings/${bookingId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${tokenData.token}`
+            const tokenData = await authClient.token();
+            const token = tokenData?.data?.token;
+            const response = await fetch(
+                `http://localhost:5000/api/bookings/${bookingId}`,
+                {
+                    method: 'DELETE',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                 }
-            });
+            );
 
             if (response.ok) {
                 toast.success('Booking cancelled successfully');

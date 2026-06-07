@@ -4,6 +4,7 @@ import CarCard from '@/app/components/CarCard';
 import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { FaSearch } from 'react-icons/fa';
+import { authClient } from '@/app/lib/auth-client';
 
 export default function ExploreCarClient({ initialCars, initialSearch = '', initialType = 'All Types' }) {
     const [searchTerm, setSearchTerm] = useState(initialSearch);
@@ -32,11 +33,6 @@ export default function ExploreCarClient({ initialCars, initialSearch = '', init
                 const url = `http://localhost:5000/cars${params.toString() ? `?${params.toString()}` : ''}`;
                 const response = await fetch(url, {
                     method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${tokenData?.data?.token}`,
-                    },
-                    credentials: "include",
                 });
                 const data = await response.json();
                 setCars(data);

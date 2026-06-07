@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, FieldError, Form, Input, Label, TextField, Select, ListBox } from "@heroui/react";
 import toast from 'react-hot-toast';
+import { authClient } from '@/app/lib/auth-client';
 
 export default function UpdateCarPage({ params }) {
     const router = useRouter();
@@ -47,41 +48,58 @@ export default function UpdateCarPage({ params }) {
     };
 
     const handleUpdate = async (e) => {
-        e.preventDefault();
-        setIsLoading(true);
+    e.preventDefault();
+    setIsLoading(true);
 
-        const formData = new FormData(e.currentTarget);
-        const updatedCar = {
-            carName: formData.get('carName'),
-            dailyRentPrice: Number(formData.get('dailyRentPrice')),
-            carType: formData.get('carType'),
-            imageURL: formData.get('imageURL'),
-            seatCapacity: Number(formData.get('seatCapacity')),
-            pickupLocation: formData.get('pickupLocation'),
-            description: formData.get('description'),
-            availabile: formData.get('availability') === 'true',
-        };
+    const formData = new FormData(e.currentTarget);
 
-        try {
-            const response = await fetch(`http://localhost:5000/cars/${carId}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(updatedCar),
-            });
-
-            if (response.ok) {
-                toast.success('Car updated successfully!');
-                router.push('/my-added-cars');
-            } else {
-                const error = await response.json();
-                toast.error(error.message || 'Failed to update car');
-            }
-        } catch (error) {
-            toast.error('Something went wrong');
-        } finally {
-            setIsLoading(false);
-        }
+    const updatedCar = {
+        carName: formData.get('carName'),
+        dailyRentPrice: Number(formData.get('dailyRentPrice')),
+        carType: formData.get('carType'),
+        imageURL: formData.get('imageURL'),
+        seatCapacity: Number(formData.get('seatCapacity')),
+        pickupLocation: formData.get('pickupLocation'),
+        description: formData.get('description'),
+        availability: formData.get('availabile') === 'true',
     };
+
+    try {
+        const tokenData = await authClient.token();
+        const token = tokenData?.data?.token;
+
+        if (!token) {
+            toast.error('Please login again');
+            return;
+        }
+
+        const response = await fetch(
+            `http://localhost:5000/cars/${carId}`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                credentials: 'include',
+                body: JSON.stringify(updatedCar),
+            }
+        );
+
+        if (response.ok) {
+            toast.success('Car updated successfully!');
+            router.push('/my-added-cars');
+        } else {
+            const error = await response.json();
+            toast.error(error.message || 'Failed to update car');
+        }
+    } catch (error) {
+        console.error(error);
+        toast.error('Something went wrong');
+    } finally {
+        setIsLoading(false);
+    }
+};
 
     if (loading) {
         return (
