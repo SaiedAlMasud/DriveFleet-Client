@@ -45,11 +45,13 @@ const AddCarPage = () => {
             email: session.user.email,
         };
 
+        const tokenData =await authClient.token();
         try {
             const response = await fetch('http://localhost:5000/cars', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${tokenData.token}`,
                 },
                 body: JSON.stringify(carData),
             });

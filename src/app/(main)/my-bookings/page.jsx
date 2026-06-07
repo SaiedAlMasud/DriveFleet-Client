@@ -31,8 +31,12 @@ export default function MyBookingsPage() {
                 setLoading(false);
                 return;
             }
-
-            const response = await fetch(`http://localhost:5000/api/bookings/user/${session.user.id}`);
+            const tokenData = await authClient.token();
+            const response = await fetch(`http://localhost:5000/api/bookings/user/${session.user.id}`, {
+                headers: {
+                    'Authorization': `Bearer ${tokenData.token}`
+                }
+            });
             const data = await response.json();
             setBookings(data);
             await minimumLoadingTime;
@@ -55,6 +59,9 @@ export default function MyBookingsPage() {
         try {
             const response = await fetch(`http://localhost:5000/api/bookings/${bookingId}`, {
                 method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${tokenData.token}`
+                }
             });
 
             if (response.ok) {

@@ -18,7 +18,6 @@ export const config = {
   matcher: [
     '/profile/:path*',
     '/my-bookings/:path*',
-    '/addcar/:path*',
     '/update-car/:path*',
     '/my-added-cars/:path*',
   ],

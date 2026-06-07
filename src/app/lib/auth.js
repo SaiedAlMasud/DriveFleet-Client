@@ -13,6 +13,12 @@ export const auth = betterAuth({
   emailAndPassword: { 
     enabled: true, 
   },
+  // socialProviders: {
+  //   google: {
+  //     clientId: ,
+  //     clientSecret: ,
+  //   }
+  // },
   session: {
     cookieCache: {
       enabled: true,

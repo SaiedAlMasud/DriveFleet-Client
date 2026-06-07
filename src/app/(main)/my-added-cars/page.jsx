@@ -12,19 +12,26 @@ export default function MyAddedCarsPage() {
     const [loading, setLoading] = useState(true);
     const [deletingId, setDeletingId] = useState(null);
 
-    useEffect(() => {
-        fetchMyCars();
-    }, []);
-
     const fetchMyCars = async () => {
         try {
             const { data: session } = await authClient.getSession();
             if (!session?.user) {
                 toast.error('Please login to view your cars');
+                setLoading(false);
                 return;
             }
 
-            const response = await fetch(`http://localhost:5000/cars/my-cars/${session.user.id}`);
+            // Get token from session or cookies
+            const { token } = await authClient.api.getToken();
+            
+            const response = await fetch(`http://localhost:5000/cars/my-cars/${session.user.id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            });
+            
             const data = await response.json();
             setCars(data);
         } catch (error) {
@@ -35,6 +42,10 @@ export default function MyAddedCarsPage() {
         }
     };
 
+    useEffect(() => {
+        fetchMyCars();
+    }, []);
+
     const handleDeleteCar = async (carId) => {
         const confirmed = window.confirm('Are you sure you want to delete this car? This action cannot be undone.');
         if (!confirmed) return;
@@ -42,8 +53,16 @@ export default function MyAddedCarsPage() {
         setDeletingId(carId);
 
         try {
+            // Get token for delete request
+            const { token } = await authClient.api.getToken();
+            
             const response = await fetch(`http://localhost:5000/cars/${carId}`, {
                 method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
             });
 
             if (response.ok) {
