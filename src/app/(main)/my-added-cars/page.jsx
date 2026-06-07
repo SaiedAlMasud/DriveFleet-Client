@@ -23,7 +23,7 @@ export default function MyAddedCarsPage() {
             
             // Fix: Use getToken() instead of token()
             const tokenData  = await authClient.token();
-            console.log('Auth token:', tokenData?.data?.token); // Debugging log
+            // console.log('Auth token:', tokenData?.data?.token); // Debugging log
             
             const response = await fetch(`http://localhost:5000/cars/my-cars/${session.user.id}`, {
                 headers: {

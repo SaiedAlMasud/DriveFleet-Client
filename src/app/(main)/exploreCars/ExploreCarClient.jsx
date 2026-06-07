@@ -27,12 +27,20 @@ export default function ExploreCarClient({ initialCars, initialSearch = '', init
                 if (selectedType && selectedType !== 'All Types') {
                     params.append('type', selectedType);
                 }
-                
+                const tokenData = await authClient.token();
+
                 const url = `http://localhost:5000/cars${params.toString() ? `?${params.toString()}` : ''}`;
-                const response = await fetch(url);
+                const response = await fetch(url, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${tokenData?.data?.token}`,
+                    },
+                    credentials: "include",
+                });
                 const data = await response.json();
                 setCars(data);
-                
+
                 // Update URL without page reload
                 const newUrl = `${pathname}${params.toString() ? `?${params.toString()}` : ''}`;
                 router.replace(newUrl, { scroll: false });
@@ -42,7 +50,7 @@ export default function ExploreCarClient({ initialCars, initialSearch = '', init
                 setIsLoading(false);
             }
         };
-        
+
         fetchCars();
     }, [searchTerm, selectedType, pathname, router]);
 
@@ -129,7 +137,7 @@ export default function ExploreCarClient({ initialCars, initialSearch = '', init
                 {cars.map((car) => (
                     <CarCard key={car._id} car={car} />
                 ))}
-            </div> 
+            </div>
 
             {cars.length === 0 && !isLoading && (
                 <div className="text-center py-12">
