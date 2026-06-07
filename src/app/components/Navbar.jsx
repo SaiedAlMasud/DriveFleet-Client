@@ -27,6 +27,7 @@ const Navbar = () => {
     { name: 'Home', href: '/' },
     { name: 'Explore Cars', href: '/exploreCars' },
     { name: 'Add Cars', href: '/addcar' },
+    { name: 'My Added Cars', href: '/my-added-cars' },
     { name: 'My Bookings', href: '/my-bookings' },
   ];
 
@@ -148,7 +149,7 @@ const Navbar = () => {
               <div className="flex items-center gap-3">
                 <Link 
                   href='/login' 
-                  className='text-blue-600 text-base sm:text-lg lg:text-xl font-semibold px-3 py-1.5 sm:px-4 sm:py-2 rounded-md border-2 border-blue-500 hover:bg-blue-500 hover:text-white transition'
+                  className='text-white text-base sm:text-lg lg:text-xl font-semibold px-3 py-1.5 sm:px-4 sm:py-2 rounded-md bg-blue-500 hover:bg-white hover:text-blue-500 transition'
                 >
                   Login
                 </Link>
