@@ -61,30 +61,14 @@ export default function RegisterPage() {
     const handleGoogleLogin = async () => {
         setIsLoading(true);
         try {
-            // Mock Google login - Replace with actual Google OAuth
-            const mockGoogleUser = {
-                email: 'google@user.com',
-                name: 'Google User',
-                photoURL: 'https://ui-avatars.com/api/?name=Google+User&background=blue&color=white'
-            };
-
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/google-login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(mockGoogleUser),
+            await signUp.social({
+                provider: "google",
+                callbackURL: "/", // Redirect to home after successful signup
             });
-
-            if (response.ok) {
-                alert('Google login successful!');
-                router.push('/');
-            } else {
-                setError('Google login failed');
-            }
         } catch (error) {
-            setError('Something went wrong with Google login');
-        } finally {
+            console.error('Google signup error:', error);
+            toast.error('Google signup failed');
+            setError('Google signup failed');
             setIsLoading(false);
         }
     };

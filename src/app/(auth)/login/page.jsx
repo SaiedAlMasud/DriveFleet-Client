@@ -63,8 +63,19 @@ export default function LoginPage() {
         }
     };
 
-    const handleGoogleLogin = () => {
-        alert('Google login - Coming soon!');
+    const handleGoogleLogin = async () => {
+        setIsLoading(true);
+        try {
+            await signIn.social({
+                provider: "google",
+                callbackURL: "/", // Redirect to home after successful login
+            });
+        } catch (error) {
+            console.error('Google login error:', error);
+            toast.error('Google login failed', { duration: 2000 });
+            setError('Google login failed');
+            setIsLoading(false);
+        }
     };
 
     return (
