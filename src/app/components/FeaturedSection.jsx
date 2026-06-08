@@ -11,7 +11,7 @@ const FeaturedSection = async () => {
                 <p className="text-gray-600 text-2xl">Browse our handpicked selection of premium vehicles available for rent</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-10 gap-10 p-6">
-                {cars.map((car) => (
+                {cars.slice(0, 3).map((car) => (
                     <CarCard key={car._id} car={car} />
                 ))}
             </div>

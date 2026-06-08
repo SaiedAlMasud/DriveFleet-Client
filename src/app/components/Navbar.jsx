@@ -51,10 +51,16 @@ const Navbar = () => {
   return (
     <div className="bg-gray-100 sticky top-0 z-50">
       <div className="flex items-center justify-between px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
-        
+
         {/* Logo Section */}
         <div className="flex items-center justify-start">
-          <Image src='/NavbarLogo.png' alt='DriveFleet Logo' width={60} height={60} className="sm:w-[70px] sm:h-[70px] lg:w-[90px] lg:h-[60px]" />
+          <Image
+            src="/NavbarLogo.png"
+            alt="DriveFleet Logo"
+            width={90}
+            height={60}
+            className="h-[50px] sm:h-[60px] lg:h-[70px] w-auto"
+          />
           <h1 className='mx-2 sm:mx-3 text-2xl sm:text-3xl lg:text-4xl font-bold text-black'>
             DriveFleet
           </h1>
@@ -65,13 +71,12 @@ const Navbar = () => {
           <ul className='flex space-x-6 lg:space-x-12'>
             {navLinks.map((link) => (
               <li key={link.name}>
-                <Link 
-                  href={link.href} 
-                  className={`text-base lg:text-xl font-semibold transition ${
-                    isActive(link.href) 
-                      ? 'text-blue-600 border-b-2 border-blue-600 pb-1' 
+                <Link
+                  href={link.href}
+                  className={`text-base lg:text-xl font-semibold transition ${isActive(link.href)
+                      ? 'text-blue-600 border-b-2 border-blue-600 pb-1'
                       : 'text-gray-700 hover:text-blue-500'
-                  }`}
+                    }`}
                 >
                   {link.name}
                 </Link>
@@ -147,14 +152,14 @@ const Navbar = () => {
             !loading && (
               // Logged Out - Show Login and Register buttons
               <div className="flex items-center gap-3">
-                <Link 
-                  href='/login' 
+                <Link
+                  href='/login'
                   className='text-white text-base sm:text-lg lg:text-xl font-semibold px-3 py-1.5 sm:px-4 sm:py-2 rounded-md bg-blue-500 hover:bg-white hover:text-blue-500 transition'
                 >
                   Login
                 </Link>
-                <Link 
-                  href='/register' 
+                <Link
+                  href='/register'
                   className='text-blue-600 text-base sm:text-lg lg:text-xl font-semibold px-3 py-1.5 sm:px-4 sm:py-2 rounded-md border-2 border-blue-500 hover:bg-blue-500 hover:text-white transition'
                 >
                   Register
@@ -170,19 +175,18 @@ const Navbar = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </summary>
-            
+
             {/* Mobile Menu Dropdown */}
             <div className='absolute right-0 left-0 mt-2 bg-gray-100 border-t border-gray-200 py-4 px-4 shadow-lg'>
               <ul className='flex flex-col space-y-3'>
                 {navLinks.map((link) => (
                   <li key={link.name}>
-                    <Link 
-                      href={link.href} 
-                      className={`block text-lg font-semibold transition py-2 ${
-                        isActive(link.href) 
-                          ? 'text-blue-600' 
+                    <Link
+                      href={link.href}
+                      className={`block text-lg font-semibold transition py-2 ${isActive(link.href)
+                          ? 'text-blue-600'
                           : 'text-gray-700 hover:text-blue-500'
-                      }`}
+                        }`}
                     >
                       {link.name}
                     </Link>
@@ -212,8 +216,8 @@ const Navbar = () => {
                       </div>
                     </li>
                     <li>
-                      <Link 
-                        href="/profile" 
+                      <Link
+                        href="/profile"
                         className="block text-gray-700 hover:text-blue-500 transition px-2 py-2"
                         onClick={() => {
                           const details = document.querySelector('details');
@@ -224,8 +228,8 @@ const Navbar = () => {
                       </Link>
                     </li>
                     <li>
-                      <Link 
-                        href="/my-added-cars" 
+                      <Link
+                        href="/my-added-cars"
                         className="block text-gray-700 hover:text-blue-500 transition px-2 py-2"
                         onClick={() => {
                           const details = document.querySelector('details');
@@ -253,8 +257,8 @@ const Navbar = () => {
                   <>
                     <hr className="my-2" />
                     <li>
-                      <Link 
-                        href="/login" 
+                      <Link
+                        href="/login"
                         className="block text-blue-600 font-semibold transition px-2 py-2"
                         onClick={() => {
                           const details = document.querySelector('details');
@@ -265,8 +269,8 @@ const Navbar = () => {
                       </Link>
                     </li>
                     <li>
-                      <Link 
-                        href="/register" 
+                      <Link
+                        href="/register"
                         className="block text-gray-700 font-semibold transition px-2 py-2"
                         onClick={() => {
                           const details = document.querySelector('details');

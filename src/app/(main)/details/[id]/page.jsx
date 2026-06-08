@@ -84,7 +84,7 @@ async function CarContent({ id }) {
                             {/* Price */}
                             <div className="mb-10">
                                 <span className="text-orange-500 text-3xl lg:text-4xl mr-2">$</span>
-                                <span className="text-3xl lg:text-4xl font-bold text-slate-900">
+                                <span className="text-3xl lg:text-4xl font-bold text-blue-600">
                                     {car.dailyRentPrice}
                                 </span>
                                 <span className="text-xl lg:text-2xl text-slate-500 ml-2"> per day</span>
