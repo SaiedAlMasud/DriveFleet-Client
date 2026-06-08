@@ -1,6 +1,9 @@
 # 🚗 DriveFleet - Car Rental Platform
 
-![DriveFleet Banner](https://your-image-url.com/banner.png)
+## 📌 Project Overview
+
+**DriveFleet** is a full-stack car rental platform that allows users to explore available vehicles, rent cars, manage bookings, and list their own cars for rent. The platform features secure authentication, responsive design, and a modern user interface.
+
 
 ## 🌐 Live Site URL
 
@@ -8,9 +11,6 @@
 
 **Backend (Server):** [https://drivefleet-server.onrender.com/](https://drivefleet-server.onrender.com/)
 
-## 📌 Project Overview
-
-**DriveFleet** is a full-stack car rental platform that allows users to explore available vehicles, rent cars, manage bookings, and list their own cars for rent. The platform features secure authentication, responsive design, and a modern user interface.
 
 ## ✨ Key Features
 
@@ -44,4 +44,3 @@
 - **Backend:** Deployed on Render
 - **Database:** MongoDB Atlas
 
-## 📁 Project Structure
