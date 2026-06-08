@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🚗 DriveFleet - Car Rental Platform
 
-## Getting Started
+![DriveFleet Banner](https://your-image-url.com/banner.png)
 
-First, run the development server:
+## 🌐 Live Site URL
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+**Frontend (Client):** [https://saied-al-masud-drivefleet.vercel.app/](https://saied-al-masud-drivefleet.vercel.app/)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Backend (Server):** [https://drivefleet-server.onrender.com/](https://drivefleet-server.onrender.com/)
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 📌 Project Overview
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**DriveFleet** is a full-stack car rental platform that allows users to explore available vehicles, rent cars, manage bookings, and list their own cars for rent. The platform features secure authentication, responsive design, and a modern user interface.
 
-## Learn More
+## ✨ Key Features
 
-To learn more about Next.js, take a look at the following resources:
+- 🔐 **Secure Authentication** - User registration and login with JWT token stored in HTTP-only cookies for enhanced security
+- 🚘 **Car Listings** - Browse, search, and filter available cars by name and type with real-time updates
+- 📝 **CRUD Operations** - Add, edit, update, and delete car listings (owners can manage their own vehicles)
+- 📅 **Booking System** - Book cars with driver option and special notes, view all bookings in one place
+- 👤 **User Dashboard** - Personal profile management, view added cars, and track booking history
+- 📱 **Responsive Design** - Fully responsive interface that works seamlessly on mobile, tablet, and desktop devices
+- 🎨 **Modern UI** - Clean, recruiter-friendly design with smooth animations using Framer Motion
+- 🔍 **Search & Filter** - Search cars by name and filter by type (SUV, Sedan, Hatchback, Luxury)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🛠️ Technologies Used
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Frontend
+- **Next.js 14** (App Router)
+- **Tailwind CSS** for styling
+- **Framer Motion** for animations
+- **HeroUI** component library
+- **Better Auth** for authentication
 
-## Deploy on Vercel
+### Backend
+- **Node.js** with **Express.js**
+- **MongoDB** with Mongoose ODM
+- **JWT** for secure authentication
+- **bcryptjs** for password hashing
+- **CORS** enabled for cross-origin requests
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Deployment
+- **Frontend:** Deployed on Vercel
+- **Backend:** Deployed on Render
+- **Database:** MongoDB Atlas
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📁 Project Structure
