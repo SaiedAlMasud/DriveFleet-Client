@@ -15,7 +15,7 @@ import {
 } from "@heroui/react";
 import { FaGoogle, FaEnvelope, FaLock, FaUser, FaCamera } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
-import { signUp } from '@/app/lib/auth-client';
+import { signIn, signUp } from '@/app/lib/auth-client';
 import toast from 'react-hot-toast';
 
 export default function RegisterPage() {
@@ -61,7 +61,7 @@ export default function RegisterPage() {
     const handleGoogleLogin = async () => {
         setIsLoading(true);
         try {
-            await signUp.social({
+            await signIn.social({
                 provider: "google",
                 callbackURL: "/", // Redirect to home after successful signup
             });
