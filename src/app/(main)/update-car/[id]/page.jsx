@@ -32,11 +32,11 @@ export default function UpdateCarPage({ params }) {
     const fetchCar = async () => {
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cars/${carId}`);
-            
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            
+
             const data = await response.json();
             setCar(data);
         } catch (error) {
@@ -48,58 +48,58 @@ export default function UpdateCarPage({ params }) {
     };
 
     const handleUpdate = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
+        e.preventDefault();
+        setIsLoading(true);
 
-    const formData = new FormData(e.currentTarget);
+        const formData = new FormData(e.currentTarget);
 
-    const updatedCar = {
-        carName: formData.get('carName'),
-        dailyRentPrice: Number(formData.get('dailyRentPrice')),
-        carType: formData.get('carType'),
-        imageURL: formData.get('imageURL'),
-        seatCapacity: Number(formData.get('seatCapacity')),
-        pickupLocation: formData.get('pickupLocation'),
-        description: formData.get('description'),
-        availability: formData.get('availabile') === 'true',
-    };
+        const updatedCar = {
+            carName: formData.get('carName'),
+            dailyRentPrice: Number(formData.get('dailyRentPrice')),
+            carType: formData.get('carType'),
+            imageURL: formData.get('imageURL'),
+            seatCapacity: Number(formData.get('seatCapacity')),
+            pickupLocation: formData.get('pickupLocation'),
+            description: formData.get('description'),
+            available: formData.get('availability') === 'true',
+        };
 
-    try {
-        const tokenData = await authClient.token();
-        const token = tokenData?.data?.token;
+        try {
+            const tokenData = await authClient.token();
+            const token = tokenData?.data?.token;
 
-        if (!token) {
-            toast.error('Please login again');
-            return;
-        }
-
-        const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/cars/${carId}`,
-            {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                credentials: 'include',
-                body: JSON.stringify(updatedCar),
+            if (!token) {
+                toast.error('Please login again');
+                return;
             }
-        );
 
-        if (response.ok) {
-            toast.success('Car updated successfully!');
-            router.push('/my-added-cars');
-        } else {
-            const error = await response.json();
-            toast.error(error.message || 'Failed to update car');
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/cars/${carId}`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify(updatedCar),
+                }
+            );
+
+            if (response.ok) {
+                toast.success('Car updated successfully!');
+                router.push('/my-added-cars');
+            } else {
+                const error = await response.json();
+                toast.error(error.message || 'Failed to update car');
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error('Something went wrong');
+        } finally {
+            setIsLoading(false);
         }
-    } catch (error) {
-        console.error(error);
-        toast.error('Something went wrong');
-    } finally {
-        setIsLoading(false);
-    }
-};
+    };
 
     if (loading) {
         return (
@@ -122,9 +122,9 @@ export default function UpdateCarPage({ params }) {
                         Edit your vehicle information
                     </p>
                 </div>
-                
-                <Form 
-                    className="flex w-full max-w-4xl flex-col gap-6 mx-auto my-10 p-6 sm:p-8 border border-gray-300 rounded-lg shadow-lg bg-white" 
+
+                <Form
+                    className="flex w-full max-w-4xl flex-col gap-6 mx-auto my-10 p-6 sm:p-8 border border-gray-300 rounded-lg shadow-lg bg-white"
                     onSubmit={handleUpdate}
                 >
                     {/* Car Name */}
@@ -144,11 +144,11 @@ export default function UpdateCarPage({ params }) {
                         </TextField>
 
                         {/* Car Type Dropdown */}
-                        <Select 
-                            isRequired 
-                            name="carType" 
-                            className="w-full" 
-                            placeholder="Select car type" 
+                        <Select
+                            isRequired
+                            name="carType"
+                            className="w-full"
+                            placeholder="Select car type"
                             size="lg"
                             defaultSelectedKeys={[car.carType]}
                         >
@@ -195,21 +195,21 @@ export default function UpdateCarPage({ params }) {
                     {/* Description */}
                     <TextField isRequired name="description" type="text" defaultValue={car.description}>
                         <Label className="text-lg md:text-xl lg:text-2xl font-semibold">Description</Label>
-                        <Input 
-                            className="h-36 text-lg md:text-xl hover:border hover:border-gray-300" 
-                            size="lg" 
+                        <Input
+                            className="h-36 text-lg md:text-xl hover:border hover:border-gray-300"
+                            size="lg"
                         />
                         <FieldError />
                     </TextField>
 
                     {/* Availability Status */}
-                    <Select 
-                        isRequired 
-                        name="availability" 
-                        className="w-full" 
-                        placeholder="Select availability status" 
+                    <Select
+                        isRequired
+                        name="availability"
+                        className="w-full"
+                        placeholder="Select availability status"
                         size="lg"
-                        defaultSelectedKeys={[String(car.availability !== false)]}
+                        defaultSelectedKeys={[String(car.available)]}
                     >
                         <Label className="text-lg md:text-xl lg:text-2xl font-semibold">Availability Status</Label>
                         <Select.Trigger className="h-14 text-lg md:text-xl hover:border hover:border-gray-300">
@@ -226,19 +226,19 @@ export default function UpdateCarPage({ params }) {
 
                     {/* Buttons */}
                     <div className="flex flex-col sm:flex-row gap-4 mt-4">
-                        <Button 
-                            type="submit" 
-                            size="lg" 
-                            color="primary" 
+                        <Button
+                            type="submit"
+                            size="lg"
+                            color="primary"
                             className="text-lg md:text-xl font-semibold py-3 px-6 w-full sm:w-auto bg-blue-600 hover:bg-blue-700"
                             isLoading={isLoading}
                         >
                             Update Car
                         </Button>
-                        <Button 
-                            type="button" 
-                            variant="bordered" 
-                            size="lg" 
+                        <Button
+                            type="button"
+                            variant="bordered"
+                            size="lg"
                             className="text-lg md:text-xl font-semibold py-3 px-6 w-full sm:w-auto border-gray-400 hover:bg-gray-100"
                             onClick={() => router.back()}
                         >
