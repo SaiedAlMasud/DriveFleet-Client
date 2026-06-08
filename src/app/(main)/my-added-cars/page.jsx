@@ -25,7 +25,7 @@ export default function MyAddedCarsPage() {
             const tokenData  = await authClient.token();
             // console.log('Auth token:', tokenData?.data?.token); // Debugging log
             
-            const response = await fetch(`http://localhost:5000/cars/my-cars/${session.user.id}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cars/my-cars/${session.user.id}`, {
                 headers: {
                     'Authorization': `Bearer ${tokenData?.data?.token}`,
                     'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ export default function MyAddedCarsPage() {
 
         try {
             const tokenData = await authClient.token();
-            const response = await fetch(`http://localhost:5000/cars/${carId}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cars/${carId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

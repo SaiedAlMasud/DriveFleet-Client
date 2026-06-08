@@ -35,7 +35,7 @@ export default function MyBookingsPage() {
             const token = tokenData?.data?.token;
 
             const response = await fetch(
-                `http://localhost:5000/api/bookings/user/${session.user.id}`,
+                `${process.env.NEXT_PUBLIC_API_URL}/api/bookings/user/${session.user.id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -70,7 +70,7 @@ export default function MyBookingsPage() {
             const tokenData = await authClient.token();
             const token = tokenData?.data?.token;
             const response = await fetch(
-                `http://localhost:5000/api/bookings/${bookingId}`,
+                `${process.env.NEXT_PUBLIC_API_URL}/api/bookings/${bookingId}`,
                 {
                     method: 'DELETE',
                     headers: {

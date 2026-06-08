@@ -11,7 +11,7 @@ async function getCars(search = '', type = 'All Types') {
             params.append('type', type);
         }
         
-        const url = `http://localhost:5000/cars${params.toString() ? `?${params.toString()}` : ''}`;
+        const url = `${process.env.NEXT_PUBLIC_API_URL}/cars${params.toString() ? `?${params.toString()}` : ''}`;
         const res = await fetch(url, {
             cache: 'no-store',
         });

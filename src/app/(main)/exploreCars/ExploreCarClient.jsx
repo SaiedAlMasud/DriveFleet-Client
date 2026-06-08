@@ -30,7 +30,7 @@ export default function ExploreCarClient({ initialCars, initialSearch = '', init
                     params.append('type', selectedType);
                 }
 
-                const url = `http://localhost:5000/cars${params.toString() ? `?${params.toString()}` : ''}`;
+                const url = `${process.env.NEXT_PUBLIC_API_URL}/cars${params.toString() ? `?${params.toString()}` : ''}`;
                 const response = await fetch(url, {
                     method: "GET",
                 });

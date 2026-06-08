@@ -31,7 +31,7 @@ export default function UpdateCarPage({ params }) {
 
     const fetchCar = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/cars/${carId}`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cars/${carId}`);
             
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -74,7 +74,7 @@ export default function UpdateCarPage({ params }) {
         }
 
         const response = await fetch(
-            `http://localhost:5000/cars/${carId}`,
+            `${process.env.NEXT_PUBLIC_API_URL}/cars/${carId}`,
             {
                 method: 'PUT',
                 headers: {

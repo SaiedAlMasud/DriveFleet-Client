@@ -68,7 +68,7 @@ export default function RegisterPage() {
                 photoURL: 'https://ui-avatars.com/api/?name=Google+User&background=blue&color=white'
             };
 
-            const response = await fetch('http://localhost:5000/auth/google-login', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/google-login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

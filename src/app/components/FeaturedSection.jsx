@@ -11,7 +11,7 @@ const FeaturedSection = () => {
     useEffect(() => {
         const fetchCars = async () => {
             try {
-                const res = await fetch('http://localhost:5000/cars');
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cars`);
                 const data = await res.json();
                 setCars(data);
             } catch (error) {

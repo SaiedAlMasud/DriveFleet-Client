@@ -15,7 +15,7 @@ function LoadingSpinner() {
 
 // Car Details Component
 async function CarContent({ id }) {
-    const response = await fetch(`http://localhost:5000/cars/${id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cars/${id}`, {
         cache: 'no-store' // Don't cache, always fetch fresh data
     });
     
