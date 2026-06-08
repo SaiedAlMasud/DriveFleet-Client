@@ -11,7 +11,7 @@ const Banner = () => {
           Experience premium vehicles at affordable prices. Book in minutes, drive in hours. Your perfect ride awaits.
         </p>
         <Link
-          href="#"
+          href="/exploreCars"
           className="inline-block bg-white text-blue-600 px-6 sm:px-8 py-2 sm:py-3 rounded-full font-semibold text-base sm:text-lg hover:bg-gray-300 hover:-translate-y-3 transition duration-300 shadow-lg"
         >
           Explore Cars
