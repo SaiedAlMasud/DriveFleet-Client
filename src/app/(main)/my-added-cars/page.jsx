@@ -20,11 +20,15 @@ export default function MyAddedCarsPage() {
                 setLoading(false);
                 return;
             }
-            
+
             // Fix: Use getToken() instead of token()
-            const tokenData  = await authClient.token();
+            const tokenData = await authClient.token();
+
+            console.log("Session:", session);
+            console.log("Token Data:", tokenData);
+            console.log("User ID:", session?.user?.id);
             // console.log('Auth token:', tokenData?.data?.token); // Debugging log
-            
+
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cars/my-cars/${session.user.id}`, {
                 headers: {
                     'Authorization': `Bearer ${tokenData?.data?.token}`,
@@ -32,14 +36,19 @@ export default function MyAddedCarsPage() {
                 },
                 credentials: 'include',
             });
-            
-            
+
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            
+
             const data = await response.json();
+
+            console.log("Response Status:", response.status);
+            console.log("Cars Data:", data);
             setCars(data);
+
+            
         } catch (error) {
             console.error('Error fetching cars:', error);
             toast.error('Failed to load your cars');
@@ -124,8 +133,8 @@ export default function MyAddedCarsPage() {
                                         className="w-full h-full object-cover"
                                     />
                                     <span className={`absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-semibold ${car.available === true
-                                            ? 'bg-green-500 text-white'
-                                            : 'bg-red-500 text-white'
+                                        ? 'bg-green-500 text-white'
+                                        : 'bg-red-500 text-white'
                                         }`}>
                                         {car.available === true ? 'Available' : 'Not Available'}
                                     </span>
