@@ -23,10 +23,6 @@ export default function MyAddedCarsPage() {
 
             // Fix: Use getToken() instead of token()
             const tokenData = await authClient.token();
-
-            console.log("Session:", session);
-            console.log("Token Data:", tokenData);
-            console.log("User ID:", session?.user?.id);
             // console.log('Auth token:', tokenData?.data?.token); // Debugging log
 
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cars/my-cars/${session.user.id}`, {
@@ -43,12 +39,9 @@ export default function MyAddedCarsPage() {
             }
 
             const data = await response.json();
-
-            console.log("Response Status:", response.status);
-            console.log("Cars Data:", data);
             setCars(data);
 
-            
+
         } catch (error) {
             console.error('Error fetching cars:', error);
             toast.error('Failed to load your cars');
